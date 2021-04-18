@@ -19,10 +19,7 @@ export default async () => {
     log('MongoDB Initialized');
 
     server.listen(config.port, () => {
-        // if (err) {
-        //     log(err);
-        //     return;
-        // }
+
         log(`Your server is ready on port ${config.port}!`);
     });
 
