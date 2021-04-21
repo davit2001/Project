@@ -2,7 +2,7 @@ import {ICategory, CategoryModel} from '../models/category.model';
 import {CategoryValidate} from '../validation/joi'
 import {ObjectId} from 'mongodb'
 import mongoose from 'mongoose';
-
+import {log} from 'console'
 export class CategoryService {
     private static instance: CategoryService;
     private constructor(){};
@@ -16,12 +16,16 @@ export class CategoryService {
 
     public getById(id: string) {
         try {
-            if (!mongoose.Types.ObjectId.isValid(id))  throw new Error(`Id is incorrect: ${id}`)
-            return CategoryModel.findById(id);
-        } catch(err) {
-            throw new Error(err)
+            if (!mongoose.Types.ObjectId.isValid(id))  {
+                return new Promise((res, rej) => res(`Id is incorrect: ${id}`))
+            }
+                return CategoryModel.findById(id);
+        } catch(error) {
+            throw new Error(error)
         }
-    }
+
+
+}
 
 
     public async getAll() {
@@ -49,7 +53,10 @@ export class CategoryService {
 
     public removeById(id: string){
         try {
-            if (!mongoose.Types.ObjectId.isValid(id))  throw new Error(`Id is incorrect: ${id}`)
+            if (!mongoose.Types.ObjectId.isValid(id))  {
+                return new Promise((res, rej) => res(`Id is incorrect: ${id}`))
+            }
+
             return CategoryModel.deleteOne({_id: id})
         } catch (err) {
             throw new Error(err)
@@ -61,7 +68,10 @@ export class CategoryService {
             const {error} = CategoryValidate(category)
             if (error) throw new Error(error.details[0].message);
 
-            if (!mongoose.Types.ObjectId.isValid(id))  throw new Error(`Id is incorrect: ${id}`)
+            if (!mongoose.Types.ObjectId.isValid(id))  {
+                return new Promise((res, rej) => res(`Id is incorrect: ${id}`))
+            }
+
             const Id = new ObjectId(id)
             return CategoryModel.findByIdAndUpdate(Id, category).then(() => {
                 return CategoryModel.findById(Id);

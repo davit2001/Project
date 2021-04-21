@@ -17,7 +17,9 @@ export class FoodsService {
 
     public getById(id: string) {
         try {
-            if (!mongoose.Types.ObjectId.isValid(id))  throw new Error(`Id is incorrect: ${id}`)
+            if (!mongoose.Types.ObjectId.isValid(id))  {
+                return new Promise((res, rej) => res(`Id is incorrect: ${id}`))
+            }
            return FoodsModel.findById(id)
         } catch(err) {
             throw new Error(err)
@@ -47,7 +49,9 @@ export class FoodsService {
 
      public removeById(id: string){
          try {
-            if (!mongoose.Types.ObjectId.isValid(id))  throw new Error(`Id is incorrect: ${id}`)
+            if (!mongoose.Types.ObjectId.isValid(id))  {
+                return new Promise((res, rej) => res(`Id is incorrect: ${id}`))
+            }
              return FoodsModel.deleteOne({_id: id})
          } catch (err) {
              throw new Error(err)
@@ -56,7 +60,9 @@ export class FoodsService {
 
      public edit(id: any, category: IFoods) {
          try {
-            if (!mongoose.Types.ObjectId.isValid(id))  throw new Error(`Id is incorrect: ${id}`)
+            if (!mongoose.Types.ObjectId.isValid(id))  {
+                return new Promise((res, rej) => res(`Id is incorrect: ${id}`))
+            }
 
              const Id = new ObjectId(id)
              return FoodsModel.findByIdAndUpdate(Id, category).then(() => {

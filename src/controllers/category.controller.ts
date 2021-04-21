@@ -2,7 +2,7 @@ import {Request, Response, Router} from 'express';
 import {CategoryService} from '../services/category.service';
 import {IController} from "./IController";
 import {ICategory} from "../models/category.model";
-
+import {log} from 'console'
 
 export class CategoryController implements IController {
     public router: Router = Router();
@@ -35,12 +35,12 @@ export class CategoryController implements IController {
     }
 
     private getById(req: Request, res: Response): void {
-        this.categoryService.getById(req.params.id)
-            .then((data: any) => {
-                res.send(data);
+      this.categoryService.getById(req.params.id)
+          .then((data: any) => {
+               res.send(data);
             })
-            .catch((err: Error) => {
-                res.status(404).send(err.message);
+            .catch((error) => {
+                    res.send(error.message)
             })
     }
 
@@ -61,9 +61,9 @@ export class CategoryController implements IController {
         const category = req.body;
         this.categoryService.add(category)
             .then((data: any) => {
-            res.send(data);
-        })  .catch((error: Error) => {
-                res.send(error.message)
+                res.send(data);
+            })  .catch((error) => {
+                res.send(error)
             })
     }
 
